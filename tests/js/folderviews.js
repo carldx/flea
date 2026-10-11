@@ -35,4 +35,8 @@ function run(check) {
     check("a folder-view choice tests Pane's Trash host, not a missing root property", chooser.indexOf("!trashHost.opened") >= 0, true)
     check("and it cannot throw through an undefined root Trash property", chooser.indexOf("root.trashHost") < 0, true)
     check("navigation restores the destination view before listing", Source.source("ui/js/Nav.js").indexOf("pane.restoreView(newPath)") >= 0, true)
+    var preferences = Source.slice(Source.source("ui/Pane.qml"), "id: preferences", "    Connections {")
+    var skipVirtualViews = preferences.indexOf("if (root.recentMode.length === 0 && !trashHost.opened)")
+    var restoreCurrentFolder = preferences.indexOf("root.restoreView(root.path)")
+    check("Recent and Trash prevent preference restoration", skipVirtualViews >= 0 && skipVirtualViews < restoreCurrentFolder, true)
 }

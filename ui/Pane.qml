@@ -321,7 +321,8 @@ FocusScope {
         id: preferences
         interval: 0
         onTriggered: {
-            root.restoreView(root.path)
+            if (root.recentMode.length === 0 && !trashHost.opened)
+                root.restoreView(root.path)
             if (!root.visible || !root.path || root.listInFlight || root.searchMode.length > 0
                     || root.recentMode.length > 0
                     || root.appliedListingPreferences === root.listingPreferences) return
